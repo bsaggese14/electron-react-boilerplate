@@ -1,0 +1,16 @@
+html {
+  background-color: #f8f9fa;
+}
+#data {
+  height: 330px;
+  max-height: 330px;
+}
+.gwiTable .rowPercent input {
+  width: 40px;
+}
+.gwiTable .rowBonus input {
+  width: 60px;
+}
+.vacationTable input {
+  width: 40px;
+}

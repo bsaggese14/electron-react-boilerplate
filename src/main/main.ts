@@ -14,6 +14,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { saveConfig } from './electron-store/store';
+import { Channels, ReportConfig } from 'shared-local';
 
 class AppUpdater {
   constructor() {
@@ -25,10 +27,16 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+// ipcMain.on('ipc-example', async (event, arg) => {
+//   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
+//   console.log(msgTemplate(arg));
+//   event.reply('ipc-example', msgTemplate('pong'));
+// });
+
+ipcMain.on(Channels.SAVE_CONFIG, async (event, arg: ReportConfig) => {
+  // saveConfig(arg);
+  // const { app } = require('electron');
+  // console.log('HEY THERRR', app.getPath('userData'));
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -131,6 +139,7 @@ app
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
+
       if (mainWindow === null) createWindow();
     });
   })

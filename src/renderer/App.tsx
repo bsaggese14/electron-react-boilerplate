@@ -1,50 +1,42 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+// import { storeTest } from '../main/electron-store/store';
+import { Suspense, useEffect } from 'react';
 import './App.css';
+import { Main } from './components/Main';
+import { Nav } from './components/Nav';
+import './components/nav.css';
+// import { useInitMyDb } from './indexedDB/init';
+import './report-generation/generateReport';
+import { db, useInitMyDb } from './indexedDB/init';
+import { configsTestData } from './report-generation/utils';
+import { Provider } from 'jotai';
 
-function Hello() {
-  return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
-  );
-}
+export const App = () => {
+  // local data example
+  // const testDataName = 'testData5';
+  // const previousStoredValue = window.localStorage.getItem(testDataName);
+  // window.localStorage.setItem(
+  //   testDataName,
+  //   `${parseInt(previousStoredValue || '0') + 1}`
+  // );
+  // window.localStorage.setItem(testDataName, JSON.stringify(configsTestData));
+  // const gottenData = JSON.parse(
+  //   window.localStorage.getItem(testDataName) || ''
+  // ) as ReportConfig[];
+  // console.log('HW::', gottenData);
+  useEffect(() => {
+    useInitMyDb();
+  }, []);
 
-export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
+    <Provider>
+      <Suspense fallback={'<Loader/>'}>
+        <div className="App bg-light" style={{ textAlign: 'left' }}>
+          <Nav />
+          <Main />
+        </div>
+      </Suspense>
+    </Provider>
   );
-}
+};
+
+export default App;
